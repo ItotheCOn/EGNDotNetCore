@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EGNDotNetCore.ConsoleApp", "EGNDotNetCore.ConsoleApp\EGNDotNetCore.ConsoleApp.csproj", "{F5129437-BA2F-429A-ADE5-622F9D0FE8B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EGNDotNetCore.ConsoleApp", "EGNDotNetCore.ConsoleApp\EGNDotNetCore.ConsoleApp.csproj", "{F5129437-BA2F-429A-ADE5-622F9D0FE8B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{EF8DB2B1-833D-4077-B756-023F7347F0EA}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
