@@ -8,5 +8,5 @@ using System.Reflection;
 Console.WriteLine("Hello, World!");
 AdoDotNet adoDotNet = new AdoDotNet();
 //adoDotNet.Read();
-adoDotNet.Create("Test title2", "Test author2", "Test content2");
+adoDotNet.Create("Test title2", "Test author2", "Test content2");test
 
