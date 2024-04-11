@@ -10,4 +10,3 @@ AdoDotNet adoDotNet = new AdoDotNet();
 //adoDotNet.Read();
 adoDotNet.Create("Test title2", "Test author2", "Test content2");
 
-AssemblyDescriptionAttribute;
