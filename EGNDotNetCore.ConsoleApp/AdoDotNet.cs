@@ -102,7 +102,7 @@ namespace EGNDotNetCore.ConsoleApp
         public void Edit(int id)
         {
             SqlConnection connection = new SqlConnection(_sqlConnectionStringBuilder.ConnectionString);
-            string query = @"select * from Tbl_blog where BlogId =@BlogId";
+            string query = "select * from Tbl_blog where BlogId =@BlogId";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogId", id);
             SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
