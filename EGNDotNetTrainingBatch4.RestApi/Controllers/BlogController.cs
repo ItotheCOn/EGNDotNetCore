@@ -93,6 +93,6 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             string message = result > 0 ? "Update data Done" : "Update Data failed";
             return Ok(message);
         } 
-        
+      
     }
 }
