@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using EGNDotNetTrainingBatch4.RestApi.Models;
+using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -123,12 +124,15 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, BlogModel blogs)
         {
-            string query = "select * from Tbl_blog where BlogId=@BlogId";
+            string query = "SELECT COUNT(*) FROM Tbl_blog WHERE BlogId=@BlogId";//count= return the number of rows that matched the specificed criterion.
             SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogId", id);
-            int result = cmd.ExecuteNonQuery();
+//ExecuteScalar=method of sqlcommand in ADO.Net.
+//ExecuteScalar= retrieve the count as a single value,
+//int mean normally return set is object and null, so we have to cast the return set into data type that we want to change.
+            int result = (int)cmd.ExecuteScalar();
             if (result == 0)
             {
                 connection.Close();
@@ -153,7 +157,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
                 return NotFound("No Data");
             }
             condition = condition.Substring(0,condition.Length - 2);
-            newQuery += condition + " WHERE BlogId=@BlogId"+";";
+            newQuery += condition + " WHERE BlogId=@BlogId";
             SqlCommand newCmd = new SqlCommand(newQuery, connection);
             newCmd.Parameters.AddWithValue("@BlogId", id);
             if (!string.IsNullOrEmpty(blogs.BlogTitle))
@@ -174,6 +178,19 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             int last = newCmd.ExecuteNonQuery();
             connection.Close();
             string message = last > 0 ? "Patch done" : "Patch failed";
+            return Ok(message);
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            string query = "DELETE FROM Tbl_blog WHERE BlogId=@BlogId";
+            SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            connection.Open();
+            SqlCommand cmd = new SqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("@BlogId", id);
+            int result = cmd.ExecuteNonQuery();
+            connection.Close();
+            string message = result > 0 ? "Delete Done" : "Delete closed";
             return Ok(message);
         }
     }
