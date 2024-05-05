@@ -13,6 +13,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
     [ApiController]
     public class BlogAdoDotNetController : ControllerBase
     {
+        
         [HttpGet]
         public IActionResult Read()
         {
@@ -42,7 +43,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
                     BlogContent = Convert.ToString(dr["BlogContent"])
             };
                 lst.Add(blogs);
-            }*/
+            */
             // dr is the same functiion as DataRow dr
             //option3
             List<BlogModel> lst = tb.AsEnumerable().Select(dr => new BlogModel {
@@ -193,5 +194,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             string message = result > 0 ? "Delete Done" : "Delete closed";
             return Ok(message);
         }
+       
+       
     }
 }
