@@ -20,7 +20,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
         public IActionResult Read()
         {
             string query = "SELECT * FROM Tbl_blog";
-            //sing IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            //using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
             //List<BlogModel> lst = db.Query<BlogModel>(query).ToList();
             var lst = _dapperServices.Query<BlogModel>(query);
             return Ok(lst);  
