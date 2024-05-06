@@ -16,13 +16,14 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
     public class BlogDapper2Controller : ControllerBase
     {
         private readonly DapperServices _dapperServices = new DapperServices(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+
         [HttpGet]
         public IActionResult Read()
         {
             string query = "SELECT * FROM Tbl_blog";
-            //using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            // using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
             //List<BlogModel> lst = db.Query<BlogModel>(query).ToList();
-            var lst = _dapperServices.Query<BlogModel>(query);
+            var lst= _dapperServices.Query<BlogModel>(query);
             return Ok(lst);  
         }
         //Have to Write query before connection to database
@@ -37,8 +38,9 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
            (@BlogTitle
            ,@BlogAuthor       
            ,@BlogContent)";
-            using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
-            int result = db.Execute(query, blogs);
+            // using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            //int result = db.Execute(query, blogs);
+            int result = _dapperServices.Execute(query, blogs);
             string message = result > 0 ? "Create data done" : "Create Data failed";
             return Ok(message);
         }
@@ -56,8 +58,9 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
       ,[BlogAuthor] = @BlogAuthor
       ,[BlogContent] = @BlogContent
  WHERE BlogId = @BlogId";
-            using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
-            int result = db.Execute(query, blogs);
+            //  using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            //int result = db.Execute(query, blogs);
+            int result = _dapperServices.Execute(query, blogs);
             string message = result > 0 ? "Update done" : "Update failed";
             return Ok(message);
         }
@@ -101,8 +104,9 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             string query = $@"UPDATE [dbo].[Tbl_Blog]
    SET {condition}
  WHERE BlogId = @BlogId";
-            using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
-            int data = db.Execute(query, blogs);
+            //using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            //int data = db.Execute(query, blogs);
+            var data = _dapperServices.Execute(query, blogs);
             string message = data > 0 ? "Patch Done" : "patch failed";
             return Ok(message);
         }
@@ -115,17 +119,18 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
                 return NotFound("No Data");
             }
             string query = "DELETE FROM Tbl_blog WHERE BlogId=@BlogId";
-            using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
-
-            int data = db.Execute(query,new BlogModel { BlogId =id});
+            //using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            //int data = db.Execute(query,new BlogModel { BlogId =id});
+            int data = _dapperServices.Execute(query, new BlogModel { BlogId = id });
             string message = data > 0 ? "Delete Done" : "Delete Failed";
             return Ok(message);
         }
         private BlogModel? FindById(int id)
         {
             string query = "select * from Tbl_blog where BlogId=@BlogId";
-            using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
-            var result = db.Query<BlogModel>(query, new BlogModel { BlogId = id }).FirstOrDefault();
+            // using IDbConnection db = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            // var result = db.Query<BlogModel>(query, new BlogModel { BlogId = id }).FirstOrDefault();
+            var result = _dapperServices.QueryFirstOrDefault<BlogModel>(query);
             return result;
         }
     }
