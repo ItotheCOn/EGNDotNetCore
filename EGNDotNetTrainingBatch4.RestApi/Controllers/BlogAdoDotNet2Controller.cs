@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.Xml;
 
 namespace EGNDotNetTrainingBatch4.RestApi.Controllers
 {
@@ -15,61 +17,46 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
     public class BlogAdoDotNet2Controller : ControllerBase
     {
         private readonly AdoDotNetService _adoDotNetService = new AdoDotNetService(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+
         
         [HttpGet]
         public IActionResult Read()
         {
             string query = "select * from Tbl_blog";
-            // SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
-            //connection.Open();
-            //SqlCommand cmd = new SqlCommand(query, connection);
-            //DataTable tb = new DataTable();
-            //SqlDataAdapter runQuery = new SqlDataAdapter(cmd);
-            //runQuery.Fill(tb);
-            //connection.Close();
-            //List<BlogModel> lst = new List<BlogModel>();
-            /*foreach(DataRow dr in tb.Rows)
-            {
-                //option 1
-                BlogModel blogs = new BlogModel();
-                blogs.BlogId = Convert.ToInt32(dr["BlogId"]);
-                blogs.BlogTitle = Convert.ToString(dr["BlogTitle"]);
-                blogs.BlogAuthor = Convert.ToString(dr["BlogAuthor"]);
-                blogs.BlogContent = Convert.ToString(dr["BlogContent"]);
-                //different option,option2
-                BlogModel blogs = new BlogModel
-                {
-                    BlogId = Convert.ToInt32(dr["BlogId"]),
-                    BlogTitle = Convert.ToString(dr["BlogTitle"]),
-                    BlogAuthor = Convert.ToString(dr["BlogAuthor"]),
-                    BlogContent = Convert.ToString(dr["BlogContent"])
-            };
-                lst.Add(blogs);
-            */
-            // dr is the same functiion as DataRow dr
-            //option3
-            /* List<BlogModel> lst = tb.AsEnumerable().Select(dr => new BlogModel {
-                 BlogId = Convert.ToInt32(dr["BlogId"]),
-                 BlogTitle = Convert.ToString(dr["BlogTitle"]),
-                 BlogAuthor = Convert.ToString(dr["BlogAuthor"]),
-                 BlogContent = Convert.ToString(dr["BlogContent"])
-             }).ToList();*/
-            var lst = _adoDotNetService.Query<BlogModel>(query);
+            var lst = _adoDotNetService.Query<BlogModel>(query).ToList();
+          
+
             return Ok(lst);
         }
         [HttpGet("{id}")]
         public IActionResult getBlogByid(int id)
         {
             string query = "select * from Tbl_blog where BlogId=@BlogId";
-            /*SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+
+            /*
+            SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
             SqlCommand cmd = new SqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@Blogid", id);
+            cmd.Parameters.AddWithValue("@BlogId", id);
             DataTable tb = new DataTable();
             SqlDataAdapter runQUery = new SqlDataAdapter(cmd);
             runQUery.Fill(tb);
             connection.Close();
-            if(tb.Rows.Count == 0)
+            */
+            /*
+             This is the option 1
+            AdoDotNetParameter[] parameters = new AdoDotNetParameter[1];
+            parameters[0] = new AdoDotNetParameter("@BlogId", id);
+            var lst = _adoDotNetService.Query<BlogModel>(query, parameters);
+            */
+            //params
+            var lst = _adoDotNetService.QueryFirstorDefault<BlogModel>(query, new AdoDotNetParameter("@BlogId", id));
+            if(lst is null)
+            {
+                return NotFound("No data");
+            }
+            return Ok(lst);
+            /*if(tb.Rows.Count == 0)
             {
                 return NotFound("No Data");
             }
@@ -80,13 +67,8 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
                 BlogTitle = Convert.ToString(dr["BlogTitle"]),
                 BlogAuthor = Convert.ToString(dr["BlogAuthor"]),
                 BlogContent = Convert.ToString(dr["BlogContent"])
-            };*/
-            var item = _adoDotNetService.QueryFirstOrDefault<BlogModel>(query, new AdoDotNetParameter("@BlogId", id));
-            if(item is null)
-            {
-                return NotFound("No Data");
-            }
-            return Ok(item);
+            };
+            return Ok(item);*/
         }
         [HttpPost]
         public IActionResult Create(BlogModel blogs)
@@ -99,14 +81,19 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
            (@BlogTitle
            ,@BlogAuthor       
            ,@BlogContent)";
-            SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            /*SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogTitle", blogs.BlogTitle);
             cmd.Parameters.AddWithValue("@BlogAuthor", blogs.BlogAuthor);
             cmd.Parameters.AddWithValue("@BlogContent", blogs.BlogContent);
             int result = cmd.ExecuteNonQuery();
-            connection.Close();
+            connection.Close();*/
+             int result=_adoDotNetService.Execute(query,
+                 new AdoDotNetParameter("@BlogTitle",blogs.BlogTitle)
+                , new AdoDotNetParameter("@BlogAuthor", blogs.BlogAuthor)
+                , new AdoDotNetParameter("@BlogContent", blogs.BlogContent)
+                );
             string message = result > 0 ? "Create done" : "Create failed";
             return Ok(message);
         }

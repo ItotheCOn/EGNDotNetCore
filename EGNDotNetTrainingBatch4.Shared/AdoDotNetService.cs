@@ -16,79 +16,81 @@ namespace EGNDotNetTrainingBatch4.Shared
         {
             _adoDotNetService = connection;
         }
-        public List<M> Query<M>(string query, params AdoDotNetParameter[]? parameters)
+        public List<M>Query<M>(string query, params AdoDotNetParameter[]? parameters )//params does not support default value
         {
-            SqlConnection connection = new SqlConnection(_adoDotNetService);
-            connection.Open();
-
-            SqlCommand cmd = new SqlCommand(query, connection);
-            if (parameters is not null && parameters.Length > 0)
+            SqlConnection db = new SqlConnection(_adoDotNetService);
+            db.Open();
+            SqlCommand cmd = new SqlCommand(query,db);
+            if(parameters is not null && parameters.Length > 0)
             {
-                //foreach (var item in parameters)
-                //{
-                //    cmd.Parameters.AddWithValue(item.Name, item.Value);
-                //}
-
-                //cmd.Parameters.AddRange(parameters.Select(item => new SqlParameter(item.Name, item.Value)).ToArray());
-
-                var parametersArray = parameters.Select(item => new SqlParameter(item.Name, item.Value)).ToArray();
-                cmd.Parameters.AddRange(parametersArray);
+                /*  foreach(var data in paramerters) //option 1->Easy way
+                  {
+                      cmd.Parameters.AddWithValue(data.Name, data.Value);
+                  }
+                */
+                //cmd.Parameters.AddRange(paramerters.Select(data => new SqlParameter(data.Name, data.Value)).ToArray()); more difficult level
+                var parametersValue = parameters.Select(data => new SqlParameter(data.Name, data.Value)).ToArray();
+                cmd.Parameters.AddRange(parametersValue);
             }
+            DataTable tb = new DataTable();
+            SqlDataAdapter runQuery = new SqlDataAdapter(cmd);
+            runQuery.Fill(tb);
+            db.Close();
+            string json = JsonConvert.SerializeObject(tb); //changing c#(dataTbale) into json
+            var item = JsonConvert.DeserializeObject<List<M>>(json)!;
+            return item;
 
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            sqlDataAdapter.Fill(dt);
-
-            connection.Close();
-
-            string json = JsonConvert.SerializeObject(dt); // changing C# code to json
-            List<M> lst = JsonConvert.DeserializeObject<List<M>>(json)!; // change json to C# to return as list
-
-            return lst;
         }
-        public M QueryFirstOrDefault<M>(string query, params AdoDotNetParameter[]? parameters)
+        public M QueryFirstorDefault<M>(string query, params AdoDotNetParameter[]? parameters)//params does not support default value
         {
-            SqlConnection connection = new SqlConnection(_adoDotNetService);
-            connection.Open();
-
-            SqlCommand cmd = new SqlCommand(query, connection);
+            SqlConnection db = new SqlConnection(_adoDotNetService);
+            db.Open();
+            SqlCommand cmd = new SqlCommand(query, db);
             if (parameters is not null && parameters.Length > 0)
             {
-                //foreach (var item in parameters)
-                //{
-                //    cmd.Parameters.AddWithValue(item.Name, item.Value);
-                //}
-
-                //cmd.Parameters.AddRange(parameters.Select(item => new SqlParameter(item.Name, item.Value)).ToArray());
-                // hard to understand
-                var parametersArray = parameters.Select(item => new SqlParameter(item.Name, item.Value)).ToArray();
-                cmd.Parameters.AddRange(parametersArray);
+                /*  foreach(var data in paramerters) //option 1->Easy way
+                  {
+                      cmd.Parameters.AddWithValue(data.Name, data.Value);
+                  }
+                */
+                //cmd.Parameters.AddRange(paramerters.Select(data => new SqlParameter(data.Name, data.Value)).ToArray()); more difficult level
+                var parametersValue = parameters.Select(data => new SqlParameter(data.Name, data.Value)).ToArray();
+                cmd.Parameters.AddRange(parametersValue);
             }
+            DataTable tb = new DataTable();
+            SqlDataAdapter runQuery = new SqlDataAdapter(cmd);
+            runQuery.Fill(tb);
+            db.Close();
+            string json = JsonConvert.SerializeObject(tb); //changing c#(dataTbale) into json
+            var item = JsonConvert.DeserializeObject<List<M>>(json)!;
+            return item[0];
+        }
+        public int Execute(string query, params AdoDotNetParameter[]? parameters)
+        {
+            SqlConnection db = new SqlConnection(_adoDotNetService);
+            db.Open();
+            SqlCommand cmd = new SqlCommand(query, db);
+            if(parameters is not null && parameters.Length > 0)
+            {
+                cmd.Parameters.AddRange(parameters.Select(data => new SqlParameter(data.Name, data.Value)).ToArray());
 
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            sqlDataAdapter.Fill(dt);
-
-            connection.Close();
-
-            string json = JsonConvert.SerializeObject(dt); // C# to json
-            List<M> lst = JsonConvert.DeserializeObject<List<M>>(json)!; // json to C#
-
-            return lst[0];
+            }
+            var result = cmd.ExecuteNonQuery();
+            return result;
         }
     }
     public class AdoDotNetParameter
     {
+        //nullable = 
         public AdoDotNetParameter()
         {
-        }
 
-        public AdoDotNetParameter(string name, object value)
+        }
+        public AdoDotNetParameter(string name,object value)
         {
             Name = name;
             Value = value;
         }
-
         public string Name { get; set; }
         public object Value { get; set; }
     }

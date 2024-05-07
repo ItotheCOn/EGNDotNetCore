@@ -61,7 +61,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
             SqlCommand cmd = new SqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@Blogid", id);
+            cmd.Parameters.AddWithValue("@BlogId", id);
             DataTable tb = new DataTable();
             SqlDataAdapter runQUery = new SqlDataAdapter(cmd);
             runQUery.Fill(tb);
