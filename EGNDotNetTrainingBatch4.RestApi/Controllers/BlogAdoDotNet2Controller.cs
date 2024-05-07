@@ -105,7 +105,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
        ,[BlogAuthor] = @BlogAuthor
        ,[BlogContent] = @BlogContent
   WHERE [BlogId] =@BlogId;";
-            SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            /*SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
             connection.Open();
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@BlogId", id);
@@ -113,7 +113,13 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             cmd.Parameters.AddWithValue("@BlogAuthor", blogs.BlogAuthor);
             cmd.Parameters.AddWithValue("@BlogContent", blogs.BlogContent);
             int result = cmd.ExecuteNonQuery();
-            connection.Close();
+            connection.Close();*/
+            int result = _adoDotNetService.Execute(query, 
+                new AdoDotNetParameter("@BlogId",id)
+                ,new AdoDotNetParameter("BlogTitle",blogs.BlogTitle)
+                , new AdoDotNetParameter("BlogAuthor", blogs.BlogAuthor)
+                , new AdoDotNetParameter("BlogContent", blogs.BlogContent)
+                );
             string message = result > 0 ? "Update data done" : "Update failed";
             return Ok(message);
         }
@@ -139,6 +145,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             if (!string.IsNullOrEmpty(blogs.BlogTitle))
             {
                 condition += " [BlogTitle] = @BlogTitle, ";
+                
             }
             if (!string.IsNullOrEmpty(blogs.BlogAuthor))
             {
@@ -180,12 +187,13 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
         public IActionResult Delete(int id)
         {
             string query = "DELETE FROM Tbl_blog WHERE BlogId=@BlogId";
-            SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
-            connection.Open();
-            SqlCommand cmd = new SqlCommand(query, connection);
-            cmd.Parameters.AddWithValue("@BlogId", id);
-            int result = cmd.ExecuteNonQuery();
-            connection.Close();
+            // SqlConnection connection = new SqlConnection(ConnectionStrings.sqlConnectionStringBuilder.ConnectionString);
+            //connection.Open();
+            //SqlCommand cmd = new SqlCommand(query, connection);
+            //cmd.Parameters.AddWithValue("@BlogId", id);
+            //int result = cmd.ExecuteNonQuery();
+            //connection.Close();
+            int result = _adoDotNetService.Execute(query, new AdoDotNetParameter("@BlogId", id));
             string message = result > 0 ? "Delete Done" : "Delete closed";
             return Ok(message);
         }

@@ -73,7 +73,7 @@ namespace EGNDotNetTrainingBatch4.Shared
             if(parameters is not null && parameters.Length > 0)
             {
                 cmd.Parameters.AddRange(parameters.Select(data => new SqlParameter(data.Name, data.Value)).ToArray());
-
+                
             }
             var result = cmd.ExecuteNonQuery();
             return result;
