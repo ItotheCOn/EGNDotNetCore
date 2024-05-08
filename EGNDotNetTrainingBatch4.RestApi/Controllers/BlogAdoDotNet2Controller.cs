@@ -142,6 +142,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             }
             string newQuery = " UPDATE Tbl_blog SET ";
             string condition = string.Empty;
+          
             if (!string.IsNullOrEmpty(blogs.BlogTitle))
             {
                 condition += " [BlogTitle] = @BlogTitle, ";
