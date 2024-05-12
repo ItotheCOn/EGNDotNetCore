@@ -76,7 +76,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
                 item.BlogContent = blog.BlogContent;
             }
             var result = _dbConnect.SaveChanges();
-            string message = result > 0 ? "Update data Done" : "Update Data failed";
+            string message = result > 0 ? "Patch data Done" : "Patch Data failed";
             return Ok(message);
         }
         [HttpDelete("{id}")]
@@ -90,7 +90,7 @@ namespace EGNDotNetTrainingBatch4.RestApi.Controllers
             }
             _dbConnect.Blogs.Remove(item);
             var result = _dbConnect.SaveChanges();
-            string message = result > 0 ? "Update data Done" : "Update Data failed";
+            string message = result > 0 ? "Delete data Done" : "Delete Data failed";
             return Ok(message);
         } 
       

@@ -14,7 +14,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EGNDotNetTrainingBatch4.Res
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EGNDotNetTrainingBatch4.Shared", "EGNDotNetTrainingBatch4.Shared\EGNDotNetTrainingBatch4.Shared.csproj", "{6E4FC232-3FA4-45B3-81B1-8C6FCEB70D5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EGNDotNetCore.RestApiWithNLayer", "EGNDotNetCore.RestApiWithNLayer\EGNDotNetCore.RestApiWithNLayer.csproj", "{AB303555-1EF2-4908-9247-E443C8BCFC18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EGNDotNetCore.RestApiWithNLayer", "EGNDotNetCore.RestApiWithNLayer\EGNDotNetCore.RestApiWithNLayer.csproj", "{AB303555-1EF2-4908-9247-E443C8BCFC18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EGNDotNetCore.ConsoleAppHttClient", "EGNDotNetCore.ConsoleAppHttClient\EGNDotNetCore.ConsoleAppHttClient.csproj", "{90380B96-981D-48A6-93A5-24F1C870A251}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EGNDotNetCore.ConsoleAppHttpClientExample", "EGNDotNetCore.ConsoleAppHttpClientExample\EGNDotNetCore.ConsoleAppHttpClientExample.csproj", "{EA766B03-13F1-4D15-8FA5-C26E35592E38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +42,14 @@ Global
 		{AB303555-1EF2-4908-9247-E443C8BCFC18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB303555-1EF2-4908-9247-E443C8BCFC18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB303555-1EF2-4908-9247-E443C8BCFC18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90380B96-981D-48A6-93A5-24F1C870A251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90380B96-981D-48A6-93A5-24F1C870A251}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90380B96-981D-48A6-93A5-24F1C870A251}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90380B96-981D-48A6-93A5-24F1C870A251}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA766B03-13F1-4D15-8FA5-C26E35592E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA766B03-13F1-4D15-8FA5-C26E35592E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA766B03-13F1-4D15-8FA5-C26E35592E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA766B03-13F1-4D15-8FA5-C26E35592E38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

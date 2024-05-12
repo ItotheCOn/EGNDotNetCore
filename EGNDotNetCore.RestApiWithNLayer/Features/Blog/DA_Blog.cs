@@ -55,14 +55,17 @@ namespace EGNDotNetCore.RestApiWithNLayer.Features.Blog
             {
                 item.BlogTitle = blogs.BlogTitle;
             }
+         
             if (!string.IsNullOrEmpty(blogs.BlogAuthor))
             {
                 item.BlogAuthor = blogs.BlogAuthor;
             }
+            
             if (!string.IsNullOrEmpty(blogs.BlogContent))
             {
                 item.BlogContent = blogs.BlogContent;
             }
+            
             var result = _dbConnect.SaveChanges();
             return result;
         }
