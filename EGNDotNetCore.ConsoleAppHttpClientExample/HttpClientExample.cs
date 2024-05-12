@@ -14,7 +14,7 @@ namespace EGNDotNetCore.ConsoleAppHttpClientExample
         private readonly string _blogEndpoint = "api/blog";
         public async Task RunAsync()
         {
-            //await ReadAsync();
+            await ReadAsync();
             //await EditAsync(2005);
             //await DeleteBlogAsync(6003);
             // await UpdateAync(2005, "TestAB", "TestBA", "TestCBA");
