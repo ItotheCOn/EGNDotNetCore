@@ -14,12 +14,14 @@ namespace EGNDotNetCore.RestApiWithNLayer.Features.Birds
             var respone = JsonConvert.DeserializeObject<Birds>(JsonStr);
             return respone;
         }
+
         [HttpGet("Tbl_Bird")]
         public async Task<IActionResult> GetAllBirdsInfo()
         {
             var model = await getAllBirdsAsync();
             return Ok(model.Tbl_Bird);
         }
+
         [HttpGet("id")]
         public async Task<IActionResult> GetBirdType(int id)
         {
