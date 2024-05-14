@@ -10,15 +10,15 @@ namespace EGNDotNetCore.ConsoleAppHttpClientExample
 {
     internal class HttpClientExample
     {
-        private readonly HttpClient _client = new HttpClient() { BaseAddress = new Uri("https://localhost:7230") };
+        private readonly HttpClient _client = new HttpClient() { BaseAddress = new Uri("https://localhost:7231") };
         private readonly string _blogEndpoint = "api/blog";
         public async Task RunAsync()
         {
-            //await ReadAsync();
+            await ReadAsync();
             //await EditAsync(2005);
             //await DeleteBlogAsync(6003);
             // await UpdateAync(2005, "TestAB", "TestBA", "TestCBA");
-           // await PatchAsync(2005, "ddd", "", "");
+            //await PatchAsync(2005, "TestingABC", "", "");
         }
         private async Task ReadAsync()
         {
@@ -86,31 +86,6 @@ namespace EGNDotNetCore.ConsoleAppHttpClientExample
                 Console.WriteLine(message);
             }
         }
-        private async Task PatchAsync(int id,string title,string author,string content)
-        {
-            BlogModel blogs = new BlogModel();
-            blogs.BlogId = id;
-            if (!string.IsNullOrEmpty(title))
-            {
-                blogs.BlogTitle = title;
-            }
-            if (!string.IsNullOrEmpty(author))
-            {
-                blogs.BlogAuthor = author;
-            }
-            if (!string.IsNullOrEmpty(content))
-            {
-                blogs.BlogContent = content;
-            }
-            string JsonStr = JsonConvert.SerializeObject(blogs);
-            HttpContent httpContent = new StringContent(JsonStr, Encoding.UTF8, Application.Json);
-            var response = await _client.PatchAsync($"{_blogEndpoint}/{id}", httpContent);
-            if (response.IsSuccessStatusCode)
-            {
-                string message = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(message);
-            }
-        }
         private async Task DeleteBlogAsync(int id)
         {
             var response = await _client.DeleteAsync($"{_blogEndpoint}/{id}");
@@ -124,6 +99,28 @@ namespace EGNDotNetCore.ConsoleAppHttpClientExample
                 string message = await response.Content.ReadAsStringAsync();
                 Console.WriteLine(message);
             }
+        }
+
+        private async Task PatchAsync(int id, string? title, string? author, string? content)
+        {
+
+            BlogModel blogDto = new BlogModel()
+            {
+                BlogTitle = title,
+                BlogAuthor = author,
+                BlogContent = content
+            };
+
+            string jsonBlog = JsonConvert.SerializeObject(blogDto);
+           
+            var httpContent = new StringContent(jsonBlog, Encoding.UTF8, Application.Json);
+            var response = await _client.PatchAsync($"{_blogEndpoint}/{id}", httpContent);
+            if (response.IsSuccessStatusCode)
+            {
+                string message = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(message);
+            }
+
         }
     }
 }
